@@ -1,0 +1,25 @@
+{
+    "contents" : "",
+    "created" : 1450186858730.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "D2198967",
+    "lastKnownWriteTime" : 13229740524830817,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "oqaz8oq178",
+        "caption" : "Steps",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=Steps&cache_key=oqaz8oq178",
+        "displayedObservations" : "61",
+        "environment" : "",
+        "object" : "Steps",
+        "totalObservations" : "61",
+        "variables" : "2"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

@@ -2,14 +2,18 @@
 
 
 ## Loading and preprocessing the data
-<span style="color:blue">NOTE: Specific answers to questions are typed in blue</span>  
+ 
 Enable caching.
+
 
 ```r
 knitr::opts_chunk$set(cache=TRUE)
 ```
+
 **1. Load the data (i.e. read.csv())** 
+
 Unzip zip file.
+
 
 ```r
 unzip("activity.zip")
@@ -19,8 +23,11 @@ time = timestamp()
 ```
 ## ##------ Sun Dec 13 16:39:17 2015 ------##
 ```
+
 Load the data into R.  
-Assign data to the variable activity.
+
+Assign dataset to the variable activity.
+
 
 ```r
 activity <- read.csv("activity.csv")
@@ -28,6 +35,7 @@ activity <- read.csv("activity.csv")
 **2. Process/transform the data (if necessary) into a format suitable for your analysis.**  
 
 Take a look at the data.
+
 
 ```r
 str(activity)
@@ -41,6 +49,7 @@ str(activity)
 ```
 Change class of date variable from factor to POSIXct.
 
+
 ```r
 activity$date <- as.POSIXct(activity$date)
 class(activity$date)
@@ -49,9 +58,13 @@ class(activity$date)
 ```
 ## [1] "POSIXct" "POSIXt"
 ```
+
 ## What is mean total number of steps taken per day?
 
 **1. Calculate the total number of steps taken per day.**
+
+The total number of steps for each day are contained in the data frame 'Steps'.
+
 
 ```r
 Steps <- aggregate(activity$steps, list(activity$date), sum)
@@ -71,6 +84,7 @@ head(Steps)
 
 **2. If you do not understand the difference between a histogram and a barplot, research the difference between them. Make a histogram of the total number of steps taken each day**
 
+
 ```r
 hist(Steps$StepsPerDay, breaks = 50, xlim = c(0, max(Steps$StepsPerDay, na.rm = TRUE)+400), col = rgb(0,0,1), main = "Histogram of Total Number of Steps Per Day", xlab = "Steps Per Day")
 ```
@@ -79,17 +93,26 @@ hist(Steps$StepsPerDay, breaks = 50, xlim = c(0, max(Steps$StepsPerDay, na.rm = 
 
 **3. Calculate and report the mean and median of the total number of steps taken per day.**
 
+The mean and median of the total number of steps taken per day are assigned to variables 'meanSteps' and 'medianSteps' respectively.
+
 
 ```r
 meanSteps <- mean(Steps$StepsPerDay, na.rm = TRUE)
 medianSteps <- median(Steps$StepsPerDay, na.rm = TRUE)
+meanSteps: medianSteps
 ```
-<span style="color:blue">The mean of the total number of steps taken per day is **10766.**  
+
+```
+## [1] 10766.19 10765.19
+```
+The mean of the total number of steps taken per day is **10766.**  
 The median of the total number of steps taken per day is **10765.**</span>
 
 ## What is the average daily activity pattern?
 
-**1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)**
+**1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)**  
+
+'activityPat' is a data frame containing the mean number of steps for each interval.
 
 
 ```r
@@ -114,13 +137,20 @@ plot(activityPat$interval, activityPat$average, type = "l", col = "blue", main =
 
 ![](PA1_template_files/figure-html/Pattern-1.png) 
 
-**2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?**
+**2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?**  
+The 5 minute interval containing the maximum number of steps is assigned to the variable 'maxInterval'
+
 
 ```r
 m <- which.max(activityPat$average)
 maxInterval <- activityPat[m,1]
+maxInterval
 ```
-<span style="color:blue">The 5 minute interval that contains the maximum number of steps is **835**</span>
+
+```
+## [1] 835
+```
+The 5 minute interval that contains the maximum number of steps is **835**
 
 
 ## Imputing missing values
@@ -133,21 +163,22 @@ Note that there are a number of days/intervals where there are missing values (c
 ```r
 total_NAs <- nrow(activity[is.na(activity),])
 ```
-<span style="color:blue">The total number of missing values in the datset is **2304**</span>
+The total number of missing values in the datset is **2304**
 
 **2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.**
 
-activityPat contains the averages for each interval accross all days.  
+'activityPat' contains the averages for each interval accross all days.  
 I will use activityPat$average to impute missing values.
 
 **3. Create a new dataset equal to the original dataset with missing data filled in.**
 
-Assign copy of original dataset 'activity' to new data set called 'activity_new'.
+Assign copy of original dataset 'activity' to a new data frame called 'activity_new'.
 
 
 ```r
 activity_new <- activity
 ```
+
 Impute missing values
 
 
@@ -166,23 +197,38 @@ for (i in 1 : nrow(activity_new)) {
 }
 ```
 
-Check 'activity_new' for missing values, to see that all NAs have been imputed.
+Check 'activity_new' for missing values, to see that all NAs have been imputed.  
+The variable 'Rowstotal' is the nomber of rows and 'NAstotal' is the number of NAs.
 
 
 ```r
-nrow(activity_new[is.na(activity_new),])
+Rowstotal <- nrow(activity_new)
+NAstotal <- nrow(activity_new[is.na(activity_new),])
+Rowstotal
+```
+
+```
+## [1] 17568
+```
+
+```r
+NAstotal
 ```
 
 ```
 ## [1] 0
 ```
 
+There are **17568** rows and **0** NAs in the the data frame with imputed values.  
+All missing values have been filled in.
+
+ 
 **4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?**
 
 ** Breakdown of question 4.**
 
 a. Plot histogram.
-
+Steps_new is a data frame containing the total number of steps for each day.
 
 ```r
 Steps_new <- aggregate(activity_new$steps, list(activity_new$date), sum)
@@ -204,7 +250,7 @@ head(Steps_new)
 hist(Steps_new$StepsPerDay, breaks = 50, xlim = c(0, max(Steps_new$StepsPerDay)+400), col = rgb(1,0,0), main = "Histogram of Total Number of Steps Per Day\nIncluding Imputed Values", xlab = "Steps Per Day")
 ```
 
-![](PA1_template_files/figure-html/Histogram(imputed dataset)-1.png) 
+![](PA1_template_files/figure-html/Histogram Imputed-1.png) 
 
 b. Calculate and report on mean and median total number of steps taken per day.
 
@@ -212,10 +258,23 @@ b. Calculate and report on mean and median total number of steps taken per day.
 ```r
 mean_Steps_new <- as.integer(mean(Steps_new$StepsPerDay))
 median_Steps_new <- median(Steps_new$StepsPerDay)
+mean_Steps_new
 ```
 
-<span style="color:blue">The mean total number of steps taken per day is **10749**    
-The median total number of steps taken per day is **10641**</span>  
+```
+## [1] 10749
+```
+
+```r
+median_Steps_new
+```
+
+```
+## [1] 10641
+```
+
+The mean total number of steps taken per day is **10749**    
+The median total number of steps taken per day is **10641** 
 
 c.  Do these values differ from the estimates from the first part of the assignment?
 
@@ -229,23 +288,23 @@ if(median_diff > 0) {medianPosNeg <- "greater than"
 }else {medianPosNeg <- "less than"}
 ```
  
-<span style="color:blue">The mean is **16 steps less than** the estimate from the first part of assignment.  
-The median is **124 steps less than** the estimate from the first part of assignment.**</span>
+The mean is **16 steps less than** the estimate from the first part of assignment.  
+The median is **124 steps less than** the estimate from the first part of assignment.
 
-d. What is the impact of imputing missing data on the estimates of the total daily number of steps? To answer this I plotted the histograms side by side and calculated the number of days that had missing data. I also calculated the number of steps imputed for each day.
+d. What is the impact of imputing missing data on the estimates of the total daily number of steps? To better answer this I plotted the histograms side by side and showing the mean. I calculated the number of days that had missing data. I also calculated the number of steps imputed for each day.
 
 
 ```r
 par(mfrow = c(1,3))
-hist(Steps$StepsPerDay, xlim = c(0,25000), ylim = c(0,20), border = "blue", breaks = 50,  col = rgb(0,0,1), main = "Histogram with NAs omitted", xlab = "Steps Per Day")
+hist(Steps$StepsPerDay, xlim = c(0,25000), ylim = c(0,15), border = "blue", breaks = 50,  col = rgb(0,0,1), main = "Histogram with NAs omitted", xlab = "Steps Per Day")
 abline(v = mean(Steps$StepsPerDay, na.rm = TRUE), col = "blue")
-hist(Steps_new$StepsPerDay, xlim = c(0, 25000), ylim = c(0,20), border = "red", breaks = 50, col = rgb(1,0,0), main = "Histogram with imputed values", xlab = "")
+hist(Steps_new$StepsPerDay, xlim = c(0, 25000), ylim = c(0,15), border = "red", breaks = 50, col = rgb(1,0,0), main = "Histogram with imputed values", xlab = "")
 abline(v = mean(Steps_new$StepsPerDay), col ="red")
 
-hist(Steps_new$StepsPerDay, xlim = c(8500, 12500), ylim = c(0,20), border = "red", breaks = 50, col = rgb(1,0,0), main = "", xlab = "")
+hist(Steps_new$StepsPerDay, xlim = c(8500, 12500), ylim = c(0,15), border = "red", breaks = 50, col = rgb(1,0,0), main = "", xlab = "")
 abline(v = mean(Steps_new$StepsPerDay), col ="red")
 par(new = TRUE)
-hist(Steps$StepsPerDay, xlim = c(8500, 12500), ylim = c(0,20), border = "blue", breaks = 50,  col = rgb(0,0,1), main = "Histogram Comparison", xlab = "Steps Per Day")
+hist(Steps$StepsPerDay, xlim = c(8500, 12500), ylim = c(0,15), border = "blue", breaks = 50,  col = rgb(0,0,1), main = "Histogram Comparison", xlab = "Steps Per Day")
 abline(v = mean(Steps$StepsPerDay, na.rm = TRUE), col = "blue")
 ```
 
@@ -259,11 +318,25 @@ activityNA <- subset(activity, is.na(steps) == TRUE)
 activityNA[,3] <- NULL
 activityNA <- unique(activityNA)
 DailyTotalImp <- sum(activityPat$average)
+numberDays <- nrow(activityNA)
+numberDays
+```
+
+```
+## [1] 8
+```
+
+```r
+DailyTotalImp
+```
+
+```
+## [1] 10641
 ```
 There are **8** days for which values are imputed.  
 The total number of steps imputed for each of these days is **10641**. 
 
-<span style="color:blue">**The increase in the data in the dataset with imputed values caused the mean and the median to move a little to the left(decrease).  All the imputed values are close to the mean. Outside the central area the imputed data has no effect.**</span>
+**The increase in the data in the dataset with imputed values caused the mean and the median to move a little to the left.  All the imputed values are close to the mean. Outside the central area the imputed data has no effect. (Note that the means on the combined histogram are so close that they are superimposed.)**
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -333,5 +406,6 @@ Averaged Across All Weekday Days or Weekend Days") +
 ```
 
 ![](PA1_template_files/figure-html/Panel Plot-1.png) 
-There is a peak in the number of steps at approximately 850/900. This corresponds with a time of about 8:00am. This peak is higher on the weekdays when people are going to work. Then there are numerous peaks throughout the day. I think that the subjects are more active on the weekends doing projects and sports.
+
+**There is a peak in the number of steps at approximately 850/900. This corresponds with a time of about 8:00am. This peak is higher on the weekdays when people are going to work. Then there are numerous peaks throughout the day. I think that the subjects are more active on the weekends doing projects and sports.**
 
