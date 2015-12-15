@@ -2,7 +2,7 @@
 
 
 ## Loading and preprocessing the data
-
+<span style="color:blue">NOTE: Specific answers to questions are typed in blue</span>  
 Enable caching.
 
 ```r
