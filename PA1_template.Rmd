@@ -8,11 +8,6 @@ output:
 
 ## Loading and preprocessing the data
  
-Enable caching.
-
-```{r setup, echo = TRUE, include= TRUE}
-knitr::opts_chunk$set(cache=TRUE)
-```
 
 **1. Load the data (i.e. read.csv())** 
 
@@ -124,7 +119,7 @@ activity_new <- activity
 
 Impute missing values
 
-``` {r IMPUTE, echo = TRUE}
+``` {r IMPUTE, cache = TRUE, echo = TRUE}
 activityPat$average <- as.integer(activityPat$average)
 for (i in 1 : nrow(activity_new)) {
         if (is.na(activity_new$steps[i]) == FALSE) {

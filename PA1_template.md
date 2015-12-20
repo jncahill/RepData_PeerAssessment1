@@ -3,12 +3,6 @@
 
 ## Loading and preprocessing the data
  
-Enable caching.
-
-
-```r
-knitr::opts_chunk$set(cache=TRUE)
-```
 
 **1. Load the data (i.e. read.csv())** 
 
@@ -21,7 +15,7 @@ time = timestamp()
 ```
 
 ```
-## ##------ Sun Dec 13 16:39:17 2015 ------##
+## ##------ Sun Dec 20 01:48:35 2015 ------##
 ```
 
 Load the data into R.  
